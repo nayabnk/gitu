@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
-import { Box, Grid, Paper, Typography, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Grid, Paper, Typography, Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, Select, MenuItem, Stack } from '@mui/material';
 import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import { styled } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#f5f5f5',
   ...theme.typography.body2,
@@ -22,11 +23,13 @@ const columns = [
 ];
 
 const initialRows = [
-  { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
+    { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
+    { id: 'TR02', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Issue with report export', dateSubmitted: '12-Oct-2024', status: 'Pending' },
+    { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
   { id: 'TR02', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Issue with report export', dateSubmitted: '12-Oct-2024', status: 'Pending' },
   { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
-  { id: 'TR02', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Issue with report export', dateSubmitted: '12-Oct-2024', status: 'Pending' },
-  { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
+    { id: 'TR02', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Issue with report export', dateSubmitted: '12-Oct-2024', status: 'Pending' },
+    { id: 'TR01', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Cannot update profile info', dateSubmitted: '12-Oct-2024', status: 'Pending' },
   { id: 'TR02', userId: 'A102', fullName: 'Hedwig F. Nguyen', userType: 'Franchisor', requestTitle: 'Issue with report export', dateSubmitted: '12-Oct-2024', status: 'Pending' },
   // Add more rows as needed
 ];
@@ -50,6 +53,7 @@ export default function Dashboard() {
     dateSubmitted: '',
     status: '',
   });
+  const [selectedMonth, setSelectedMonth] = useState('January');
 
   const handleFilterButtonClick = () => {
     setIsFilterDialogOpen(true);
@@ -74,11 +78,40 @@ export default function Dashboard() {
     setIsFilterDialogOpen(false);
   };
 
+  const handleMonthChange = (event) => {
+    setSelectedMonth(event.target.value);
+  };
+
   return (
     <Box sx={{ flexGrow: 1, p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Technical Requests
-      </Typography>
+      <Grid container alignItems="center" justifyContent="space-between">
+        <Typography variant="h4" gutterBottom>
+          Technical Requests
+        </Typography>
+        <FormControl sx={{ minWidth: 120 }}>
+          <InputLabel id="month-select-label">Month</InputLabel>
+          <Select
+            labelId="month-select-label"
+            id="month-select"
+            value={selectedMonth}
+            label="Month"
+            onChange={handleMonthChange}
+          >
+            <MenuItem value="January">January</MenuItem>
+            <MenuItem value="February">February</MenuItem>
+            <MenuItem value="March">March</MenuItem>
+            <MenuItem value="April">April</MenuItem>
+            <MenuItem value="May">May</MenuItem>
+            <MenuItem value="June">June</MenuItem>
+            <MenuItem value="July">July</MenuItem>
+            <MenuItem value="August">August</MenuItem>
+            <MenuItem value="September">September</MenuItem>
+            <MenuItem value="October">October</MenuItem>
+            <MenuItem value="November">November</MenuItem>
+            <MenuItem value="December">December</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid>
       <Grid container spacing={2} sx={{ mb: 3 }}>
         <Grid item xs={4}>
           <Item>
@@ -100,8 +133,8 @@ export default function Dashboard() {
         </Grid>
       </Grid>
       <Box sx={{ mb: 2 }}>
-        <Stack direction="row" spacing={140}>
-          <TextField variant="outlined" placeholder="Search"  />
+        <Stack direction="row" spacing={150}>
+          <TextField variant="outlined" placeholder="Search" fullWidth />
           <Button variant="outlined" color="primary" onClick={handleFilterButtonClick}>
             Filter
           </Button>
@@ -119,10 +152,7 @@ export default function Dashboard() {
       <Dialog open={isFilterDialogOpen} onClose={handleFilterDialogClose}>
         <DialogTitle>Filter</DialogTitle>
         <DialogContent>
-        
-       
           {Object.keys(filterValues).map((key) => (
-           
             <TextField
               key={key}
               margin="dense"
